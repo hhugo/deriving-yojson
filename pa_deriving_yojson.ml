@@ -2,30 +2,30 @@ open Pa_deriving_common
 open Utils
 
 module Description : Defs.ClassDescription = struct
-  let classname = "HJson"
-  let default_module = None
-  let runtimename = "Deriving_HJson"
+  let classname = "Yojson"
+  let default_module = Some "Defaults"
+  let runtimename = "Deriving_Yojson"
   let alpha = None
   let allow_private = true
   let predefs = [
-    ["int"      ], ["Deriving_HJson";"int"];
-    ["bool"     ], ["Deriving_HJson";"bool"];
-    ["unit"     ], ["Deriving_HJson";"unit"];
-    ["char"     ], ["Deriving_HJson";"char"];
-    ["int32"    ], ["Deriving_HJson";"int32"];
-    ["Int32";"t"], ["Deriving_HJson";"int32"];
-    ["int64"    ], ["Deriving_HJson";"int64"];
-    ["Int64";"t"], ["Deriving_HJson";"int64"];
-    ["nativeint"], ["Deriving_HJson";"nativeint"];
-    ["float"    ], ["Deriving_HJson";"float"];
-    ["string"   ], ["Deriving_HJson";"string"];
-    ["list"     ], ["Deriving_HJson";"list"];
-    ["ref"      ], ["Deriving_HJson";"ref"];
-    ["option"   ], ["Deriving_HJson";"option"];
-    ["array"    ], ["Deriving_HJson";"array"];
-    ["json"                ], ["Deriving_HJson";"json"];
-    ["Safe";"json"         ], ["Deriving_HJson";"json"];
-    ["Yojson";"Safe";"json"], ["Deriving_HJson";"json"];
+    ["int"      ], ["Deriving_Yojson";"int"];
+    ["bool"     ], ["Deriving_Yojson";"bool"];
+    ["unit"     ], ["Deriving_Yojson";"unit"];
+    ["char"     ], ["Deriving_Yojson";"char"];
+    ["int32"    ], ["Deriving_Yojson";"int32"];
+    ["Int32";"t"], ["Deriving_Yojson";"int32"];
+    ["int64"    ], ["Deriving_Yojson";"int64"];
+    ["Int64";"t"], ["Deriving_Yojson";"int64"];
+    ["nativeint"], ["Deriving_Yojson";"nativeint"];
+    ["float"    ], ["Deriving_Yojson";"float"];
+    ["string"   ], ["Deriving_Yojson";"string"];
+    ["list"     ], ["Deriving_Yojson";"list"];
+    ["ref"      ], ["Deriving_Yojson";"ref"];
+    ["option"   ], ["Deriving_Yojson";"option"];
+    ["array"    ], ["Deriving_Yojson";"array"];
+    ["json"                ], ["Deriving_Yojson";"json"];
+    ["Safe";"json"         ], ["Deriving_Yojson";"json"];
+    ["Yojson";"Safe";"json"], ["Deriving_Yojson";"json"];
   ]
   let depends = []
 end
@@ -57,7 +57,7 @@ module Builder(Generator : Defs.Generator) = struct
         let l = List.mapn ~init:1 (fun (id,ty) i ->
           let fi = Printf.sprintf "f%d" i in
           <:expr<
-            Deriving_HJson.find $str:fi$ filter (fun b filter ->
+            Deriving_Yojson.find $str:fi$ filter (fun b filter ->
               if b then Some ($self#call_expr ctxt ty "to_json"$ ?filter $lid:id$) else None)
           >>
         ) id_ty in
@@ -83,7 +83,7 @@ module Builder(Generator : Defs.Generator) = struct
         | [] ->
           let from_json = <:match_case@here< `Assoc [($str:name$,`Null)] -> $uid:name$>> in
           let to_json = <:match_case@here< $uid:name$ ->
-            Deriving_HJson.find $str:name$ filter (fun b filter ->
+            Deriving_Yojson.find $str:name$ filter (fun b filter ->
               if b
               then `Assoc [($str:name$,`Null)]
               else `Null)
@@ -107,11 +107,11 @@ module Builder(Generator : Defs.Generator) = struct
             let l = List.mapn ~init:1 (fun (id, ty) i ->
               let fi = Printf.sprintf "f%d" i in
               <:expr@here<
-                Deriving_HJson.find $str:fi$ filter (fun b filter ->
+                Deriving_Yojson.find $str:fi$ filter (fun b filter ->
                   if b then Some ($self#call_expr ctxt ty "to_json"$ ?filter $lid:id$) else None)
               >>) id_ty in
             <:match_case@here< $uid:name$ $patt$ ->
-            Deriving_HJson.find $str:name$ filter (fun b filter ->
+            Deriving_Yojson.find $str:name$ filter (fun b filter ->
               if b then `Assoc [($str:name$,`List (Deriving_Yojson.filter_map (fun x -> x) $Helpers.expr_list l$))] else `Null)
             >> in
           to_json,from_json
@@ -160,7 +160,7 @@ module Builder(Generator : Defs.Generator) = struct
       let to_json =
         let l = List.map (fun (fname,strip_name,ty) ->
           <:expr<
-            Deriving_HJson.find $str:fname$ filter (fun b filter ->
+            Deriving_Yojson.find $str:fname$ filter (fun b filter ->
               if b then Some (($str:fname$,$self#call_poly_expr ctxt ty "to_json"$ ?filter o.$lid:fname$)) else None)
           >>) all
         in <:expr< `Assoc (Deriving_Yojson.filter_map (fun x -> x) $Helpers.expr_list l$) >>
@@ -171,7 +171,7 @@ module Builder(Generator : Defs.Generator) = struct
       | Type.Tag (name, []) ->
         let from_json = <:match_case@here< `Assoc [($str:name$,`Null)] -> `$name$>> in
         let to_json = <:match_case@here< `$name$ ->
-          Deriving_HJson.find $str:name$ filter (fun b filter ->
+          Deriving_Yojson.find $str:name$ filter (fun b filter ->
             if b
             then `Assoc [($str:name$,`Null)]
             else `Null)
@@ -195,11 +195,11 @@ module Builder(Generator : Defs.Generator) = struct
           let l = List.mapn ~init:1 (fun (id, ty) i ->
             let fi = Printf.sprintf "f%d" i in
             <:expr@here<
-              Deriving_HJson.find $str:fi$ filter (fun b filter ->
+              Deriving_Yojson.find $str:fi$ filter (fun b filter ->
                 if b then Some ($self#call_expr ctxt ty "to_json"$ ?filter $lid:id$) else None)
             >>) id_ty in
           <:match_case@here< `$name$ $patt$ ->
-          Deriving_HJson.find $str:name$ filter (fun b filter ->
+          Deriving_Yojson.find $str:name$ filter (fun b filter ->
             if b then `Assoc [($str:name$,`List (Deriving_Yojson.filter_map (fun x -> x) $Helpers.expr_list l$))] else `Null)
           >> in
         to_json,from_json

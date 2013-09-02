@@ -1,14 +1,32 @@
-module type HJson = sig
+module Safe = Yojson.Safe
+
+module type Yojson = sig
   type a
-  val to_json : ?filter:string list list -> a -> Yojson.Safe.json
-  val from_json : ?o:a -> Yojson.Safe.json -> a
+  val to_json : ?filter:string list list -> a -> Safe.json
+  val from_json : ?o:a -> Safe.json -> a
 end
 
-module Defaults(D : HJson) : HJson with type a = D.a = struct
-  include D
+module type Yojson_full = sig
+  type a
+  val to_json : ?filter:string list list -> a -> Safe.json
+  val to_string : ?filter:string list list -> a -> string
+  val from_json : ?o:a -> Safe.json -> a
+  val from_string : ?o:a -> string -> a
 end
 
-exception Expected_type of string * Yojson.Safe.json
+module Defaults(D : Yojson) : Yojson_full with type a = D.a = struct
+  type a = D.a
+  let to_json = D.to_json
+  let from_json = D.from_json
+  let from_string ?o string =
+    let json = Safe.from_string string in
+    D.from_json ?o json
+  let to_string ?filter a =
+    let json = D.to_json ?filter a in
+    Safe.to_string json
+end
+
+exception Expected_type of string * Safe.json
 exception Failed
 
 let expected_error name json = raise (Expected_type(name, json))
@@ -41,7 +59,7 @@ let find str filter expr =
     | Some [] -> expr false filter
     | Some l ->
       let filter = filter_map (function
-        | x::xs when x = str-> Some xs
+        | x::xs when x = str -> Some xs
         | [] -> Some []
         | _ -> None ) l in
       match filter with
@@ -49,7 +67,7 @@ let find str filter expr =
         | _ ->  expr true  (Some filter)
 
 
-module HJson_string = Defaults(struct
+module Yojson_string = Defaults(struct
   type a = string
   let from_json ?o = function
     | `String s -> s
@@ -59,7 +77,7 @@ module HJson_string = Defaults(struct
   let to_json ?filter s = leaf filter (`String s)
 end)
 
-module HJson_int64 = Defaults(struct
+module Yojson_int64 = Defaults(struct
   type a = int64
   let from_json ?o = function
     | `Int i -> Int64.of_int i
@@ -69,7 +87,17 @@ module HJson_int64 = Defaults(struct
 end)
 
 
-module HJson_int = Defaults(struct
+module Yojson_int32 = Defaults(struct
+  type a = int32
+  let from_json ?o = function
+    | `Int i -> Int32.of_int i
+    | `String s -> Int32.of_string s
+    | err -> expected_error "int" err
+  let to_json ?filter i = leaf filter (`Int (Int32.to_int i))
+end)
+
+
+module Yojson_int = Defaults(struct
   type a = int
   let from_json ?o = function
     | `Int i -> i
@@ -78,21 +106,28 @@ module HJson_int = Defaults(struct
   let to_json ?filter i = leaf filter (`Int i)
 end)
 
-module HJson_bool = Defaults(struct
+module Yojson_bool = Defaults(struct
   type a = bool
   let from_json ?o = function
     | `Bool b -> b
+    | `Int i -> i > 0
+    | `String "true" -> true
+    | `String "false" -> false
+    | `String s as err ->
+      begin
+        try int_of_string s > 0 with _ -> expected_error "bool" err
+      end
     | err -> expected_error "bool" err
   let to_json ?filter b = leaf filter (`Bool b)
 end)
 
-module HJson_unit = Defaults(struct
+module Yojson_unit = Defaults(struct
   type a = unit
   let from_json ?o _ = ()
   let to_json ?filter _ = leaf filter (`Null)
 end)
 
-module HJson_char = Defaults(struct
+module Yojson_char = Defaults(struct
   type a = char
   let from_json ?o = function
     | `String s when String.length s = 1  -> s.[0]
@@ -101,17 +136,21 @@ module HJson_char = Defaults(struct
   let to_json ?filter c = leaf filter (`String (Printf.sprintf "%c" c))
 end)
 
-module HJson_float = Defaults(struct
+module Yojson_float = Defaults(struct
   type a = float
   let from_json ?o = function
     | `Int i -> float_of_int i
-    | `String s -> float_of_string s
+    | `String s as err ->
+      begin
+        try float_of_string s with _ ->
+          expected_error "float" err
+      end
     | `Float f -> f
     | err -> expected_error "float" err
   let to_json ?filter f = leaf filter (`Float f)
 end)
 
-module HJson_list (A : HJson) = Defaults(struct
+module Yojson_list (A : Yojson) = Defaults(struct
   type a = A.a list
   let from_json ?o = function
     | `Null -> []
@@ -126,7 +165,7 @@ module HJson_list (A : HJson) = Defaults(struct
   let to_json ?filter l = `List (List.map (A.to_json ?filter) l)
 end)
 
-module HJson_option (A : HJson) = Defaults(struct
+module Yojson_option (A : Yojson) = Defaults(struct
   type a = A.a option
   let from_json ?o json=
     match json,o with
@@ -144,7 +183,7 @@ module HJson_option (A : HJson) = Defaults(struct
           else `Null)
 end)
 
-module HJson_array (A : HJson) = Defaults(struct
+module Yojson_array (A : Yojson) = Defaults(struct
   type a = A.a array
   let from_json ?o = function
     | `List l ->
@@ -163,14 +202,8 @@ module HJson_array (A : HJson) = Defaults(struct
   let to_json ?filter l = `List (List.map (A.to_json ?filter) (Array.to_list l))
 end)
 
-module HJson_json = Defaults(struct
-  type a = Yojson.Safe.json
+module Yojson_json = Defaults(struct
+  type a = Safe.json
   let from_json ?o x = x
   let to_json ?filter x = x
 end)
-
-module Json_json = struct
-  type a = Yojson.Safe.json
-  let write _ _ = let () = assert false in ()
-  let read _ = let () = assert false in `Null
-end
