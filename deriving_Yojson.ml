@@ -1,20 +1,22 @@
 module Safe = Yojson.Safe
+type json = Yojson.Safe.json
+type filter = string list list option
+
+module type Yojson'' = sig
+  type a
+  val to_json : ?filter:string list list -> a -> json
+  val from_json : ?o:a -> json -> a
+end
 
 module type Yojson = sig
   type a
-  val to_json : ?filter:string list list -> a -> Safe.json
-  val from_json : ?o:a -> Safe.json -> a
-end
-
-module type Yojson_full = sig
-  type a
-  val to_json : ?filter:string list list -> a -> Safe.json
+  val to_json : ?filter:string list list -> a -> json
   val to_string : ?filter:string list list -> a -> string
-  val from_json : ?o:a -> Safe.json -> a
+  val from_json : ?o:a -> json -> a
   val from_string : ?o:a -> string -> a
 end
 
-module Defaults(D : Yojson) : Yojson_full with type a = D.a = struct
+module Defaults(D : Yojson'') : Yojson with type a = D.a = struct
   type a = D.a
   let to_json = D.to_json
   let from_json = D.from_json
@@ -26,7 +28,7 @@ module Defaults(D : Yojson) : Yojson_full with type a = D.a = struct
     Safe.to_string json
 end
 
-exception Expected_type of string * Safe.json
+exception Expected_type of string * json
 exception Failed
 
 let expected_error name json = raise (Expected_type(name, json))
@@ -39,7 +41,11 @@ let rec filter_map f l =
         | Some x -> loop (x::acc) xs
   in loop [] l
 
-let warning = Printf.eprintf
+let warning_ = ref (fun s -> Printf.eprintf "%s" s)
+
+let set_warning f = warning_ := f
+
+let warning x = Printf.ksprintf (fun s -> !warning_ s) x
 
 let option_map f = function
   | None -> None
@@ -150,7 +156,7 @@ module Yojson_float = Defaults(struct
   let to_json ?filter f = leaf filter (`Float f)
 end)
 
-module Yojson_list (A : Yojson) = Defaults(struct
+module Yojson_list (A : Yojson'') = Defaults(struct
   type a = A.a list
   let from_json ?o = function
     | `Null -> []
@@ -165,7 +171,7 @@ module Yojson_list (A : Yojson) = Defaults(struct
   let to_json ?filter l = `List (List.map (A.to_json ?filter) l)
 end)
 
-module Yojson_option (A : Yojson) = Defaults(struct
+module Yojson_option (A : Yojson'') = Defaults(struct
   type a = A.a option
   let from_json ?o json=
     match json,o with
@@ -183,7 +189,7 @@ module Yojson_option (A : Yojson) = Defaults(struct
           else `Null)
 end)
 
-module Yojson_array (A : Yojson) = Defaults(struct
+module Yojson_array (A : Yojson'') = Defaults(struct
   type a = A.a array
   let from_json ?o = function
     | `List l ->
@@ -203,7 +209,7 @@ module Yojson_array (A : Yojson) = Defaults(struct
 end)
 
 module Yojson_json = Defaults(struct
-  type a = Safe.json
+  type a = json
   let from_json ?o x = x
   let to_json ?filter x = x
 end)

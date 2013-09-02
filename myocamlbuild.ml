@@ -489,4 +489,18 @@ let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
 # 491 "myocamlbuild.ml"
 (* OASIS_STOP *)
-Ocamlbuild_plugin.dispatch dispatch_default;;
+
+Ocamlbuild_plugin.dispatch (fun hook ->
+    dispatch_default hook;
+    match hook with
+      | After_rules ->
+        (* Internal syntax extension *)
+        List.iter
+          (fun base ->
+             let tag = "pa_" ^ base and file = "pa_" ^ base ^ ".cmo" in
+             flag ["ocaml"; "compile"; tag] & S[A"-ppopt"; A file];
+             flag ["ocaml"; "ocamldep"; tag] & S[A"-ppopt"; A file];
+             flag ["ocaml"; "doc"; tag] & S[A"-ppopt"; A file];
+             dep ["ocaml"; "ocamldep"; tag] [file])
+          ["deriving_yojson"];
+      | _ -> ())

@@ -5,6 +5,7 @@ Synopsis:    Parse/convert ocaml value from/to yojson ast
 Authors:     Hugo	Heuzard
 License:     LGPL-2.1 with OCaml linking exception
 Plugins:     StdFiles (0.3), DevFiles (0.3)
+BuildTools: ocamlbuild
 
 Library "deriving-yojson"
   Path:       ./
@@ -19,3 +20,9 @@ Library "deriving-yojson-syntax"
   FindlibParent: deriving-yojson
   Modules:    Pa_deriving_yojson
   BuildDepends: deriving.syntax,camlp4.quotations.r
+
+Executable test
+  Path: exemple
+  Install: false
+  MainIs: test.ml
+  BuildDepends: deriving-yojson,deriving-yojson.syntax

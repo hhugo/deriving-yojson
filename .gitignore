@@ -2,3 +2,6 @@ _build
 *~
 setup.data
 setup.log
+*.bak
+*.ba0
+*.byte

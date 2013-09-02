@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 4daa5c58017d6ace6013654f44cca02b)
+# DO NOT EDIT (digest: e03d42ab468822fc5d428766b21ec6d3)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -20,5 +20,17 @@
 "deriving-yojson-syntax.cmxs": use_deriving-yojson-syntax
 <*.ml{,i}>: pkg_deriving.syntax
 <*.ml{,i}>: pkg_camlp4.quotations.r
+# Executable test
+"exemple/test.byte": use_deriving-yojson
+"exemple/test.byte": use_deriving-yojson-syntax
+"exemple/test.byte": pkg_deriving.syntax
+"exemple/test.byte": pkg_camlp4.quotations.r
+"exemple/test.byte": pkg_yojson
+<exemple/*.ml{,i}>: use_deriving-yojson
+<exemple/*.ml{,i}>: use_deriving-yojson-syntax
+<exemple/*.ml{,i}>: pkg_deriving.syntax
+<exemple/*.ml{,i}>: pkg_camlp4.quotations.r
+<exemple/*.ml{,i}>: pkg_yojson
 # OASIS_STOP
 <pa_deriving_yojson.ml>:syntax_camlp4o
+<exemple/*.ml{,i}>:syntax_camlp4o,pa_deriving_yojson
