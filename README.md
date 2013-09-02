@@ -1,6 +1,11 @@
-Deriving-yojson is a Deriving (https://github.com/ocsigen/deriving) extentions to print / parse ocaml value to / from json.
+Deriving-yojson
+===============
+
+Deriving-yojson is a Deriving (https://github.com/ocsigen/deriving) extention to print / parse ocaml value to / from json.
 Json manipulation is done by Yojson (https://github.com/mjambon/yojson/)
 
+Exemple
+-------
 ```
 type location = {
   lat : float;
@@ -13,7 +18,8 @@ type t = {
 } deriving (Yojson)
 ```
 
-=Parsing=
+Parsing
+-------
 
 ```
 let value_from_json = Yojson_t.from_json ?o json
@@ -26,7 +32,8 @@ let value_from_string = Yojson_t.from_string
     ~o:{name="name";loc=None} "{\"loc\":{\"lat\": 5.2, \"lon\": 9.4}}"
 ```
 
-=Print=
+Printing
+--------
 ```
 let s = Yojson_t.to_string ?filter t
 ```
