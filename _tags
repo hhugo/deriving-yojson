@@ -1,0 +1,25 @@
+# OASIS_START
+# DO NOT EDIT (digest: 76bb1a07c749fb79a6f5d668672a3649)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library deriving-yojson
+"deriving-yojson.cmxs": use_deriving-yojson
+<*.ml{,i}>: pkg_yojson
+# Library deriving-yojson-syntax
+"deriving-yojson-syntax.cmxs": use_deriving-yojson-syntax
+<*.ml{,i}>: pkg_deriving.syntax
+<*.ml{,i}>: pkg_camlp4.extend
+<*.ml{,i}>: pkg_camlp4.quotations.r
+# OASIS_STOP
+<pa_deriving_yojson.ml>:syntax_camlp4o

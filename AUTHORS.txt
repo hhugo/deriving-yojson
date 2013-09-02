@@ -1,0 +1,5 @@
+(* OASIS_START *)
+(* DO NOT EDIT (digest: 4dcd3445107b45fdbaa7bab27e969231) *)
+Authors of deriving-yojson
+Hugo	Heuzard
+(* OASIS_STOP *)
