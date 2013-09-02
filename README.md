@@ -40,7 +40,6 @@ let s = Yojson_t.to_string ?filter t
 the optionnal parameter filter allow to filter the output.
 ```
 let s = Yojson_t.to_string ~filter:[["loc";"some";"lat"];["name"]] value_from_string
-
 ```
 will ouput
 ```
