@@ -1,10 +1,12 @@
-OASISFormat: 0.3
+OASISFormat: 0.4
 Name:        deriving-yojson
-Version:     0.1
+Version:     0.2
 Synopsis:    Parse/convert ocaml value from/to yojson ast
 Authors:     Hugo	Heuzard
+Maintainers: Hugo	Heuzard <hugo.heuzard@gmail.com>
+Homepage:    https://github.com/hhugo/deriving-yojson
 License:     LGPL-2.1 with OCaml linking exception
-Plugins:     StdFiles (0.3), DevFiles (0.3)
+Plugins:     StdFiles (0.4)
 BuildTools: ocamlbuild
 
 Library "deriving-yojson"

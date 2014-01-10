@@ -1,9 +1,9 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: e4fed179fd4e45be5267cf12075240f9) *)
+(* DO NOT EDIT (digest: 14dc970dfd94254630dad98fac641148) *)
 This is the INSTALL file for the deriving-yojson distribution.
 
 This package uses OASIS to generate its build system. See section OASIS for
-full information. 
+full information.
 
 Dependencies
 ============
@@ -25,7 +25,7 @@ Installing
 Uninstalling
 ============
 
-1. Go to the root of the package 
+1. Go to the root of the package
 2. Run 'ocaml setup.ml -uninstall'
 
 OASIS
