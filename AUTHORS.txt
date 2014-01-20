@@ -1,8 +1,12 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 79517ba96536b3a2223ddfeb5edd90a0) *)
-Authors of deriving-yojson
-Hugo	Heuzard
+(* DO NOT EDIT (digest: a5fd82d8327d07e0403070129ae15ed4) *)
 
-Current maintainers of deriving-yojson
-Hugo	Heuzard <hugo.heuzard@gmail.com>
+Authors of deriving-yojson:
+
+* Hugo	Heuzard
+
+Current maintainers of deriving-yojson:
+
+* Hugo	Heuzard <hugo.heuzard@gmail.com>
+
 (* OASIS_STOP *)

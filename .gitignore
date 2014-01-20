@@ -1,7 +1,10 @@
 _build
 *~
-setup.*
+setup.data
+setup.log
 *.bak
 *.ba0
 *.byte
-*.mllib
+#*
+*#
+.#*

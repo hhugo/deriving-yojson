@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 2cde674e8ced654ed2d8fecdc0b69c9e)
+# DO NOT EDIT (digest: 874d9c0ebddec692eaebfa50643401be)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -15,22 +15,19 @@
 "_darcs": not_hygienic
 # Library deriving-yojson
 "deriving-yojson.cmxs": use_deriving-yojson
-<*.ml{,i}>: pkg_yojson
-# Library deriving-yojson-syntax
-"deriving-yojson-syntax.cmxs": use_deriving-yojson-syntax
-<*.ml{,i}>: pkg_deriving.syntax
-<*.ml{,i}>: pkg_camlp4.quotations.r
+<*.ml{,i}>: package(yojson)
+# Library syntax
+"syntax/syntax.cmxs": use_syntax
+<syntax/*.ml{,i}>: package(deriving.syntax.common)
 # Executable test
+"exemple/test.byte": package(deriving.syntax.common)
+"exemple/test.byte": package(yojson)
 "exemple/test.byte": use_deriving-yojson
-"exemple/test.byte": use_deriving-yojson-syntax
-"exemple/test.byte": pkg_deriving.syntax
-"exemple/test.byte": pkg_camlp4.quotations.r
-"exemple/test.byte": pkg_yojson
+"exemple/test.byte": use_syntax
+<exemple/*.ml{,i}>: package(deriving.syntax.common)
+<exemple/*.ml{,i}>: package(yojson)
 <exemple/*.ml{,i}>: use_deriving-yojson
-<exemple/*.ml{,i}>: use_deriving-yojson-syntax
-<exemple/*.ml{,i}>: pkg_deriving.syntax
-<exemple/*.ml{,i}>: pkg_camlp4.quotations.r
-<exemple/*.ml{,i}>: pkg_yojson
+<exemple/*.ml{,i}>: use_syntax
 # OASIS_STOP
-<pa_deriving_yojson.ml>:syntax_camlp4o
+<syntax/pa_deriving_yojson.ml>:syntax_camlp4o,package(camlp4.quotations.r)
 <exemple/*.ml{,i}>:syntax_camlp4o,pa_deriving_yojson
