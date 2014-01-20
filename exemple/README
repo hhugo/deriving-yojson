@@ -1,0 +1,4 @@
+
+ocamlbuild -use-ocamlfind -syntax camlp4o -package deriving-yojson.syntax,deriving-yojson   test.byte --
+
+ocamlbuild -use-ocamlfind -syntax camlp4o -package deriving-yojson.syntax_tc,deriving-yojson,sexplib.syntax,sexplib   test_tc.byte --

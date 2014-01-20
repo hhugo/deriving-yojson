@@ -13,3 +13,10 @@ package "syntax" (
  archive(preprocessor,syntax) = "deriving-yojson-syntax.cma"
  exists_if = "deriving-yojson-syntax.cma"
 )
+package "syntax_tc" (
+ version = "0.1"
+ description = "Parse/convert ocaml value from/to yojson ast"
+ requires(syntax) = "deriving.syntax_tc"
+ archive(preprocessor,syntax) = "deriving-yojson-syntax.cma"
+ exists_if = "deriving-yojson-syntax.cma"
+)
