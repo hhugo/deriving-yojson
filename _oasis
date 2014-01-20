@@ -1,27 +1,50 @@
 OASISFormat: 0.4
 Name:        deriving-yojson
+OCamlVersion: >= 3.12.1
 Version:     0.3
 Synopsis:    Parse/convert ocaml value from/to yojson ast
 Authors:     Hugo	Heuzard
 Maintainers: Hugo	Heuzard <hugo.heuzard@gmail.com>
 Homepage:    https://github.com/hhugo/deriving-yojson
 License:     LGPL-2.1 with OCaml linking exception
-Plugins:     StdFiles (0.4)
-BuildTools: ocamlbuild
+Plugins:     StdFiles (0.4),META (0.4)
+BuildTools:  ocamlbuild
 
 Library "deriving-yojson"
   Path:       ./
-  BuildTools: ocamlbuild
   Modules:    Deriving_Yojson
   BuildDepends: yojson
 
-Library "deriving-yojson-syntax"
-  Path:       ./
-  BuildTools: ocamlbuild
-  FindlibName: syntax
+Library "deriving-yojson-syntax_std"
   FindlibParent: deriving-yojson
+  FindlibName: syntax
+  Path: ./syntax_std
+  InternalModules: Fake
+  BuildDepends: deriving.syntax (>= 0.6),deriving-yojson.syntax.base
+  XMETAType:        syntax
+  XMETADescription: Deriving-yojson syntax
+  XMETAExtraLines:  requires(syntax) = "deriving.syntax,deriving-yojson.syntax.base"
+
+Library "deriving-yojson-syntax_tc"
+  FindlibParent: deriving-yojson-syntax_std
+  FindlibName: tc
+  Path: ./syntax_tc
+  InternalModules: Fake
+  BuildDepends: deriving.syntax.tc (>= 0.6),deriving-yojson.syntax.base
+  XMETAType:        syntax
+  XMETADescription: Deriving-yojson syntax
+  XMETAExtraLines:  requires(syntax) = "deriving.syntax.tc,deriving-yojson.syntax.base"
+
+Library "deriving-yojson-syntax-base"
+  Path:       ./syntax_base
+  FindlibName: base
+  FindlibParent: deriving-yojson-syntax_std
   Modules:    Pa_deriving_yojson
-  BuildDepends: deriving.syntax,camlp4.quotations.r
+  BuildDepends: deriving.syntax.base (>= 0.6)
+  XMETAType:        syntax
+  XMETADescription: Deriving-yojson syntax
+  XMETAExtraLines:  requires(syntax) = "deriving.syntax.base"
+
 
 Executable test
   Path: exemple

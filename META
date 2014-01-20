@@ -1,4 +1,6 @@
-version = "0.1"
+# OASIS_START
+# DO NOT EDIT (digest: 4cd9f10f2236c7dba32ba960720f676d)
+version = "0.3"
 description = "Parse/convert ocaml value from/to yojson ast"
 requires = "yojson"
 archive(byte) = "deriving-yojson.cma"
@@ -7,16 +9,44 @@ archive(native) = "deriving-yojson.cmxa"
 archive(native, plugin) = "deriving-yojson.cmxs"
 exists_if = "deriving-yojson.cma"
 package "syntax" (
- version = "0.1"
- description = "Parse/convert ocaml value from/to yojson ast"
- requires(syntax) = "deriving.syntax"
- archive(preprocessor,syntax) = "deriving-yojson-syntax.cma"
- exists_if = "deriving-yojson-syntax.cma"
+ version = "0.3"
+ description = "Deriving-yojson syntax"
+ requires = "deriving.syntax deriving-yojson.syntax.base"
+ archive(syntax, preprocessor) = "deriving-yojson-syntax_std.cma"
+ archive(syntax, toploop) = "deriving-yojson-syntax_std.cma"
+ archive(syntax, byte) = "deriving-yojson-syntax_std.cma"
+ archive(syntax, byte, plugin) = "deriving-yojson-syntax_std.cma"
+ archive(syntax, native) = "deriving-yojson-syntax_std.cmxa"
+ archive(syntax, native, plugin) = "deriving-yojson-syntax_std.cmxs"
+ requires(syntax) = "deriving.syntax,deriving-yojson.syntax.base"
+ exists_if = "deriving-yojson-syntax_std.cma"
+ package "tc" (
+  version = "0.3"
+  description = "Deriving-yojson syntax"
+  requires = "deriving.syntax.tc deriving-yojson.syntax.base"
+  archive(syntax, preprocessor) = "deriving-yojson-syntax_tc.cma"
+  archive(syntax, toploop) = "deriving-yojson-syntax_tc.cma"
+  archive(syntax, byte) = "deriving-yojson-syntax_tc.cma"
+  archive(syntax, byte, plugin) = "deriving-yojson-syntax_tc.cma"
+  archive(syntax, native) = "deriving-yojson-syntax_tc.cmxa"
+  archive(syntax, native, plugin) = "deriving-yojson-syntax_tc.cmxs"
+  requires(syntax) = "deriving.syntax.tc,deriving-yojson.syntax.base"
+  exists_if = "deriving-yojson-syntax_tc.cma"
+ )
+ 
+ package "base" (
+  version = "0.3"
+  description = "Deriving-yojson syntax"
+  requires = "deriving.syntax.base"
+  archive(syntax, preprocessor) = "deriving-yojson-syntax-base.cma"
+  archive(syntax, toploop) = "deriving-yojson-syntax-base.cma"
+  archive(syntax, byte) = "deriving-yojson-syntax-base.cma"
+  archive(syntax, byte, plugin) = "deriving-yojson-syntax-base.cma"
+  archive(syntax, native) = "deriving-yojson-syntax-base.cmxa"
+  archive(syntax, native, plugin) = "deriving-yojson-syntax-base.cmxs"
+  requires(syntax) = "deriving.syntax.base"
+  exists_if = "deriving-yojson-syntax-base.cma"
+ )
 )
-package "syntax_tc" (
- version = "0.1"
- description = "Parse/convert ocaml value from/to yojson ast"
- requires(syntax) = "deriving.syntax_tc"
- archive(preprocessor,syntax) = "deriving-yojson-syntax.cma"
- exists_if = "deriving-yojson-syntax.cma"
-)
+# OASIS_STOP
+

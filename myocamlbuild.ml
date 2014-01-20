@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 88921c4fc872bc94a0fc26d63519cb71) *)
+(* DO NOT EDIT (digest: c9f1242c940f5c4794230b0a77758c0a) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -556,16 +556,26 @@ open Ocamlbuild_plugin;;
 let package_default =
   {
      MyOCamlbuildBase.lib_ocaml =
-       [("deriving-yojson", [], []); ("deriving-yojson-syntax", [], [])];
+       [
+          ("deriving-yojson", [], []);
+          ("deriving-yojson-syntax-base", ["syntax_base"], []);
+          ("deriving-yojson-syntax_tc", ["syntax_tc"], []);
+          ("deriving-yojson-syntax_std", ["syntax_std"], [])
+       ];
      lib_c = [];
      flags = [];
-     includes = []
+     includes =
+       [
+          ("syntax_tc", ["syntax_base"]);
+          ("syntax_std", ["syntax_base"]);
+          ("exemple", ["syntax_std"])
+       ]
   }
   ;;
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 569 "myocamlbuild.ml"
+# 579 "myocamlbuild.ml"
 (* OASIS_STOP *)
 
 Ocamlbuild_plugin.dispatch (fun hook ->
