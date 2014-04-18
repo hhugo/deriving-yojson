@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 43871d0688d7decdfe17f3cb18772297)
-version = "0.3"
+# DO NOT EDIT (digest: ece4721c4172b160783bda508668d413)
+version = "0.4"
 description = "Parse/convert ocaml value from/to yojson ast"
 requires = "yojson"
 archive(byte) = "deriving-yojson.cma"
@@ -9,7 +9,7 @@ archive(native) = "deriving-yojson.cmxa"
 archive(native, plugin) = "deriving-yojson.cmxs"
 exists_if = "deriving-yojson.cma"
 package "syntax" (
- version = "0.3"
+ version = "0.4"
  description = "Deriving-yojson syntax"
  requires = "deriving.syntax.common"
  archive(syntax, preprocessor) = "syntax.cma"
