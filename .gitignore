@@ -5,6 +5,7 @@ setup.log
 *.bak
 *.ba0
 *.byte
+*.native
 #*
 *#
 .#*

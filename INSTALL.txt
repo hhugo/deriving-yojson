@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 2e0ba403a680f78a0730a950f8598e81) *)
+(* DO NOT EDIT (digest: 77e1553d4715709c7e2390f0e11dca31) *)
 
 This is the INSTALL file for the deriving-yojson distribution.
 
@@ -11,10 +11,10 @@ Dependencies
 
 In order to compile this package, you will need:
 
-* ocaml (>= 3.12.1)
+* ocaml (>= 3.12.1) for all, test tests
 * findlib
 * yojson for library deriving-yojson
-* deriving (>= 0.6) for library syntax
+* deriving (>= 0.6) for library syntax, executable test
 
 Installing
 ==========

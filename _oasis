@@ -25,7 +25,13 @@ Library "syntax"
   XMETAExtraLines:  requires(syntax) = "deriving.syntax.common"
 
 Executable test
-  Path: exemple
+  Path: ./exemple
   Install: false
+  Build$: flag(tests)
   MainIs: test.ml
-  BuildDepends: deriving-yojson,deriving-yojson.syntax
+  CompiledObject: best
+  BuildDepends: deriving.syntax,deriving-yojson,deriving-yojson.syntax
+
+Test tests
+  Run$: flag(tests)
+  Command: $test

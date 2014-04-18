@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 874d9c0ebddec692eaebfa50643401be)
+# DO NOT EDIT (digest: 11c2c3dca9e97b95ede2d63d8624fde6)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -20,10 +20,12 @@
 "syntax/syntax.cmxs": use_syntax
 <syntax/*.ml{,i}>: package(deriving.syntax.common)
 # Executable test
-"exemple/test.byte": package(deriving.syntax.common)
-"exemple/test.byte": package(yojson)
-"exemple/test.byte": use_deriving-yojson
-"exemple/test.byte": use_syntax
+<exemple/test.{native,byte}>: package(deriving.syntax)
+<exemple/test.{native,byte}>: package(deriving.syntax.common)
+<exemple/test.{native,byte}>: package(yojson)
+<exemple/test.{native,byte}>: use_deriving-yojson
+<exemple/test.{native,byte}>: use_syntax
+<exemple/*.ml{,i}>: package(deriving.syntax)
 <exemple/*.ml{,i}>: package(deriving.syntax.common)
 <exemple/*.ml{,i}>: package(yojson)
 <exemple/*.ml{,i}>: use_deriving-yojson
