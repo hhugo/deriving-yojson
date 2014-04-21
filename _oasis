@@ -2,7 +2,7 @@ OASISFormat: 0.4
 Name:        deriving-yojson
 OCamlVersion: >= 3.12.1
 Version:     0.4
-Synopsis:    Parse/convert ocaml value from/to yojson ast
+Synopsis:    Parse/convert OCaml values from/to yojson ast
 Authors:     Hugo	Heuzard
 Maintainers: Hugo	Heuzard <hugo.heuzard@gmail.com>
 Homepage:    https://github.com/hhugo/deriving-yojson

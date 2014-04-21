@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: ece4721c4172b160783bda508668d413)
+# DO NOT EDIT (digest: a4e4226ae4b2c57d647eb44aaae3aca5)
 version = "0.4"
-description = "Parse/convert ocaml value from/to yojson ast"
+description = "Parse/convert OCaml values from/to yojson ast"
 requires = "yojson"
 archive(byte) = "deriving-yojson.cma"
 archive(byte, plugin) = "deriving-yojson.cma"

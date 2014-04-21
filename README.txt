@@ -1,8 +1,8 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: b01141a7828db3a04adc42a7efa4df8b) *)
+(* DO NOT EDIT (digest: 94fc2838e60325436d01f693b9e0a9bd) *)
 
-deriving-yojson - Parse/convert ocaml value from/to yojson ast
-==============================================================
+deriving-yojson - Parse/convert OCaml values from/to yojson ast
+===============================================================
 
 See the file [INSTALL.txt](INSTALL.txt) for building and installation
 instructions.
