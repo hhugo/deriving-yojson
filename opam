@@ -12,7 +12,6 @@ remove: [
   ["ocamlfind" "remove" "deriving-yojson"]
 ]
 depends: [
-  "deriving" {>=0.6}
   "ocamlfind"
   "yojson"
 ]
