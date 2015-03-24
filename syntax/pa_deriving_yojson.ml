@@ -125,7 +125,12 @@ module Builder(Generator : Defs.Generator) = struct
 
 
     method record ?eq ctxt tname params constraints fields =
-      let strip_underscore s = s in
+      let strip_underscore s =
+        if String.length s > 0 && s.[0] = '_' then
+          String.sub s 1 (String.length s - 1)
+        else
+          s
+      in
       let all = List.map (fun (name,ty,_) -> name,strip_underscore name,ty) fields in
       let from_json =
         let l = List.map (fun (fname,strip_name,ty) ->
